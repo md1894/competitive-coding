@@ -24,3 +24,53 @@ Sample Output:
 3
 9
 */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+
+bool check(ll input[], ll n, ll k, ll a){
+	ll remained = k;
+	for(int i = 0; i < n; i++){
+		ll n = input[i]/a;
+		if(n > 0){
+			remained -= n;
+		}
+		if(remained <= 0)
+			return true;
+	}
+	return false;
+}
+
+ll distributeCandies(ll input[], ll n, ll k){
+	sort(input, input + n);
+	ll start = 0;
+	ll end = input[n-1];
+	ll ans = 0;
+	while(start <= end){
+		ll mid = (start+end)/2;
+		if(check(input, n, k, mid)){
+			ans = mid;
+			start = mid+1;
+		}else{
+			end = mid-1;
+		}
+	}
+	return ans;
+}
+
+int main(){
+	int t;
+	cin >> t;
+	while(t--){
+		ll n, k;
+		cin >> n >> k;
+		ll input[n];
+		for(ll i = 0; i < n; i++){
+			cin >> input[i];
+		}
+		cout << distributeCandies(input, n, k) << endl;
+	}
+	return 0;
+}

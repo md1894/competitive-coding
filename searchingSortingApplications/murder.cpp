@@ -38,3 +38,70 @@ For the fourth number, the contribution to the sum is 9 (1+5+3).
 For the fifth number, the contribution to the sum is 4 (1+3).
 Hence the sum is 15 (0+1+1+9+4).
 */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+long merge(long input[], long left, long mid, long right){
+    long i = left, j = mid+1, k = 0, ans = 0;
+    long temp[right-left+1];
+    while(i <= mid && j <= right){
+        if(input[i] < input[j]){
+            ans += input[i]*(right-(j-1));
+            temp[k++] = input[i++];
+        }else{
+            temp[k++] = input[j++];
+        }
+    }
+    while(i <= mid){
+        temp[k++] = input[i++];
+    }
+    while(j <= right){
+        temp[k++] = input[j++];
+    }
+    for(long k = 0, i = left; i <= right; i++, k++){
+        input[i] = temp[k];
+    }
+    return ans;
+}
+
+
+long murder(long input[], long left, long right){
+    long ans = 0;
+    // cout << "murder(input, left, right)" << endl;
+    // cout << "left = " << left << endl;
+    // cout << "right = " << right << endl;
+    // for(long i = left; i <= right; i++){
+    //     cout << input[i] << " ";
+    // }
+    // cout << endl;
+    if(left < right){
+        long mid = (left + right)/2;
+        long leftAns = murder(input, left, mid);
+        long rightAns = murder(input, mid+1, right);
+        long mergeAns = merge(input, left, mid, right);
+        ans = leftAns + rightAns + mergeAns;
+    }
+    return ans;
+}
+
+
+long murder(long input[], long n){
+    return murder(input, 0, n-1);
+}
+
+
+int main() {
+	int t;
+    cin >> t;
+    while(t--){
+        long n;
+        cin >> n;
+        long input[n];
+        for(long i = 0; i < n; i++){
+            cin >> input[i];
+        }
+        cout << murder(input, n) << endl;
+    }
+    return 0;
+}
