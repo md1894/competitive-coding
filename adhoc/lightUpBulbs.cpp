@@ -46,8 +46,31 @@ Total cost = 1+10 => 11
 
 #include<bits/stdc++.h>
 using namespace std;
+
+long long solve(string s, int n, long long x, long long y){
+	int noOfZeroGroups = 0;
+	if(s[0] == '0')
+		noOfZeroGroups++;
+	
+	for(int i = 0; i < n-1; i++){
+		if(s[i+1] == '0' && s[i] == '1')
+			noOfZeroGroups++;
+	}
+	long long cost;
+	if(noOfZeroGroups > 0){
+		cost = (noOfZeroGroups-1)*min(x,y) + y;
+	}else{
+		cost = 0;
+	}
+	return cost;
+}
+
 int main()
 {
-    
+	string s;
+	int n;
+	long long x,y;
+	cin >> n >> x >> y >> s;
+	cout << solve(s,n,x,y) << endl;
 	return 0;
 }
