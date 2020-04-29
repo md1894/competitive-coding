@@ -35,7 +35,7 @@ using namespace std;
 
 
 int minCount(int n){
-    if(n == 0 || n == 1){
+    if(n == 1){
         return 1;
     }
     int* dp = new int[n+1];
@@ -44,7 +44,7 @@ int minCount(int n){
     for(int i = 2; i <= n; i++){
         int count = INT_MAX;
         for(int j = 1; j <= i; j++){
-            if((i-(j*j)) < 0){
+            if(i-j*j < 0){
                 break;
             }
             count = min(count, dp[i-j*j]);
@@ -60,6 +60,6 @@ int main(){
     
     int num;
     cin >> num;
-    cout << minCount(num);
+    cout << minCount(num) << endl;
     return 0;
 }
