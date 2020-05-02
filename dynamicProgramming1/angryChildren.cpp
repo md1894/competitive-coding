@@ -52,8 +52,8 @@ long angryChildren(long* input, long n, long k){
     for(long i = k; i < n; i++){
         sumOfPrevious -= input[i-k];
         target = target - (2*sumOfPrevious) + (k-1)*input[i-k] + (k-1)*input[i];
-        if(bestAns < target){
-            target = bestAns;
+        if(bestAns > target){
+            bestAns = target;
         }
         sumOfPrevious += input[i];
     }
