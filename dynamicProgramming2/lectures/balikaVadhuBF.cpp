@@ -41,63 +41,32 @@ Sample Output
 using namespace std;
 
 
+int balikaVadhuHelper(string b1, string b2, int k){
+    if(b1.empty() || b2.empty()){
+        return (k == 0) ? 0 : -1;
+    }
+    int ans;
+    if(b1[0] == b2[0]){
+        int op1 = balikaVadhuHelper(b1.substr(1), b2.substr(1), k-1);
+        if(op1 != -1){
+            op1 += b1[0];
+        }
+        int op2 = balikaVadhuHelper(b1.substr(1), b2, k);
+        int op3 = balikaVadhuHelper(b1, b2.substr(1), k);
+        ans = max(op1, max(op2, op3));
+    }else{
+        int op1 = balikaVadhuHelper(b1.substr(1), b2, k);
+        int op2 = balikaVadhuHelper(b1, b2.substr(1), k);
+        ans = max(op1, op2);
+    }
+    return ans;
+}
+
 int balikaVadhu(string b1, string b2, int k_){
-    int m = b1.length();
-    int n = b2.length();
-    /* creating a dp array of m-n-k_ */
-    int*** dp = new int**[m+1];
-    for(int i = 0; i <= m; i++){
-        dp[i] = new int*[n+1];
-        for(int j = 0; j <= n; j++){
-            dp[i][j] = new int[k_+1];
-        }
+    int ans = balikaVadhuHelper(b1, b2, k_);
+    if(ans == -1){
+        return 0;
     }
-    /* initializing the base cases */
-    /* if b1 is empty then */
-    for(int i = 0; i <= n; i++){
-        for(int j = 0; j <= k_; j++){
-            dp[0][i][j] = (j == 0) ? 0 : -1;
-        }
-    }
-    /* if b2 is empty */
-    for(int i = 0; i <= m; i++){
-        for(int j = 0; j <= k_; j++){
-            dp[i][0][j] = (j == 0) ? 0 : -1;
-        }
-    }
-    /* for k == 0 */
-    for(int i = 0; i <= m; i++){
-        for(int j = 0; j <= n; j++){
-            dp[i][j][0] = 0;
-        }
-    }
-    for(int i = 1; i <= m; i++){
-        for(int j = 1; j <= n; j++){
-            for(int k = 1; k <= k_; k++){
-                if(b1[i-1] == b2[j-1]){
-                    int op1 = dp[i-1][j-1][k-1];
-                    if(op1 != -1)
-                        op1 += b1[i-1];
-                    int op2 = dp[i][j-1][k];
-                    int op3 = dp[i-1][j][k];
-                    dp[i][j][k] = max(op1, max(op1, op2));
-                }else{
-                    int op1 = dp[i-1][j][k];
-                    int op2 = dp[i][j-1][k];
-                    dp[i][j][k] = max(op1, op2);
-                }
-            }
-        }
-    }
-    /* deallocating the dp array */
-    int ans = dp[m][n][k_] == -1 ? 0 : dp[m][n][k_];
-    for(int i = 0; i <= m; i++){
-        for(int j = 0; j <= n; j++){
-            delete [] dp[i][j];
-        }
-        delete [] dp[i];
-    }
-    delete [] dp;
     return ans;
 }
 
