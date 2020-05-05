@@ -66,7 +66,7 @@ using namespace std;
 
 pair<int,int> partyProblem(pair<int, int>* input, int budget, int n){
     pair<int,int> ans;
-    if(n == 0 || budget <= 0){
+    if(n == 0 || budget == 0){
         ans.first = 0;
         ans.second = 0;
         return ans;
