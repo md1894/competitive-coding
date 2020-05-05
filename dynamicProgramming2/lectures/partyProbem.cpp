@@ -66,7 +66,7 @@ using namespace std;
 
 pair<int,int> partyProblem(pair<int, int>* input, int budget, int n){
     pair<int,int> ans;
-    if(n <= 0 || budget <= 0){
+    if(n == 0 || budget <= 0){
         ans.first = 0;
         ans.second = 0;
         return ans;
@@ -74,14 +74,14 @@ pair<int,int> partyProblem(pair<int, int>* input, int budget, int n){
     pair<int,int> option1, option2;
     option1.first = 0;
     option1.second = 0;
-    int currBudget = input[0].first + input[0].second;
-    if(budget >= currBudget){
-        option1 =  partyProblem(input+1, budget - currBudget, n-1);
+    int currBudget = input[0].first;
+    if(currBudget <= budget){
+        option1 =  partyProblem(input+1, budget-currBudget, n-1);
         option1.first += input[0].first;
         option1.second += input[0].second;
     }
     option2 = partyProblem(input+1, budget, n-1);
-    
+
     if(option1.second > option2.second){
         return option1;
     }else if(option1.second < option2.second){
