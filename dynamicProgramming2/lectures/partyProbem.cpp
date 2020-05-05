@@ -93,6 +93,74 @@ pair<int,int> partyProblem(pair<int, int>* input, int budget, int n){
     }
 }
 
+
+/* filling column by column */
+pair<int,int> partyProblemDP(pair<int, int>* input, int budget, int n){
+    pair<int,int> pairZero = make_pair(0,0);
+    vector<vector<pair<int,int>>> dp(n+1,vector<pair<int,int>>(budget+1,pairZero));
+    /* for each MaxBudget i am iterating over each party */
+    /* at the end , last loop, final ans will be calculated */
+    for(int j = 1; j <= budget; j++){
+        for(int i = 1; i <= n; i++){
+            pair<int,int> op1 = make_pair(0,0);
+            pair<int,int> op2 = make_pair(0,0);
+            /* if i decide to go attend this party */
+            /* what amount of fun i have */
+            if(input[i-1].first <= j){
+                op1 = dp[i-1][j-input[i-1].first];
+                op1.first += input[i-1].first;
+                op1.second += input[i-1].second;
+            }
+            /* if i skip this party */
+            /* then i will keep the previous answer */
+            op2 = dp[i-1][j];
+            if(op1.second > op2.second){
+                dp[i][j] = op1;
+            }else if(op1.second < op2.second){
+                dp[i][j] = op2;
+            }else if(op1.first <= op2.first){
+                dp[i][j] = op1;
+            }else{
+                dp[i][j] = op2;
+            }
+        }
+    }
+    return dp[n][budget];
+}
+
+
+/* filling row by row */
+pair<int,int> partyProblemDP_(pair<int, int>* input, int budget, int n){
+    pair<int,int> pairZero = make_pair(0,0);
+    vector<vector<pair<int,int>>> dp(n+1,vector<pair<int,int>>(budget+1,pairZero));
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= budget; j++){
+            pair<int,int> op1 = make_pair(0,0);
+            pair<int,int> op2 = make_pair(0,0);
+            /* if i decide to go attend this party */
+            /* what amount of fun i have */
+            if(input[i-1].first <= j){
+                op1 = dp[i-1][j-input[i-1].first];
+                op1.first += input[i-1].first;
+                op1.second += input[i-1].second;
+            }
+            /* if i skip this party */
+            /* then i will keep the previous answer */
+            op2 = dp[i-1][j];
+            if(op1.second > op2.second){
+                dp[i][j] = op1;
+            }else if(op1.second < op2.second){
+                dp[i][j] = op2;
+            }else if(op1.first <= op2.first){
+                dp[i][j] = op1;
+            }else{
+                dp[i][j] = op2;
+            }
+        }
+    }
+    return dp[n][budget];
+}
+
 int main(){
     int n, budget;
     cin >> budget >> n;
@@ -101,7 +169,8 @@ int main(){
         for(int i = 0; i < n; i++){
             cin >> input[i].first >> input[i].second;
         }
-        pair<int, int> ans = partyProblem(input, budget, n);
+        // pair<int, int> ans = partyProblemDP(input, budget, n);
+        pair<int, int> ans = partyProblemDP_(input, budget, n);
         cout << ans.first << " " << ans.second << endl;
         cin >> budget >> n;
         delete [] input;
