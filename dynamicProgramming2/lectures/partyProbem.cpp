@@ -64,6 +64,47 @@ Sample Output
 #include<bits/stdc++.h>
 using namespace std;
 
+pair<int,int> partyProblem(pair<int, int>* input, int budget, int n){
+    pair<int,int> ans;
+    if(n <= 0 || budget <= 0){
+        ans.first = 0;
+        ans.second = 0;
+        return ans;
+    }
+    pair<int,int> option1, option2;
+    option1.first = 0;
+    option1.second = 0;
+    int currBudget = input[0].first + input[0].second;
+    if(budget >= currBudget){
+        option1 =  partyProblem(input+1, budget - currBudget, n-1);
+        option1.first += input[0].first;
+        option1.second += input[0].second;
+    }
+    option2 = partyProblem(input+1, budget, n-1);
+    
+    if(option1.second > option2.second){
+        return option1;
+    }else if(option1.second < option2.second){
+        return option2;
+    }else if(option1.first <= option2.first){
+        return option1;
+    }else{
+        return option2;
+    }
+}
+
 int main(){
+    int n, budget;
+    cin >> budget >> n;
+    while(n != 0 && budget != 0){
+        pair<int, int>* input = new pair<int, int>[n];
+        for(int i = 0; i < n; i++){
+            cin >> input[i].first >> input[i].second;
+        }
+        pair<int, int> ans = partyProblem(input, budget, n);
+        cout << ans.first << " " << ans.second << endl;
+        cin >> budget >> n;
+        delete [] input;
+    }
     return 0;
 }
