@@ -51,7 +51,43 @@ Sample Output
 #include <bits/stdc++.h>
 using namespace std;
 
+
+/* brute force solution */
+int traderProfit(int* input, int n, int k, int cost){
+    if(k <= 0){
+        return 0;
+    }
+
+    if(n == 1){
+        if(cost < input[0]){
+            return (input[0] - cost);
+        }else{
+            return 0;
+        }
+    }
+    int op1 = 0, op2 = 0, op3 = 0;
+    if(cost == INT_MAX){
+        op1 = traderProfit(input+1,n-1,k,input[0]);
+    }else if(cost < input[0]){
+        op2 = traderProfit(input+1,n-1,k-1,INT_MAX) + (input[0] - cost);
+    }
+    op3 = traderProfit(input+1,n-1,k,cost);
+    int ans = max(op1,max(op2,op3));
+    return ans;
+}
+
 int main()
 {
+    int t;
+    cin >> t;
+    while(t--){
+        int k, n;
+    	cin >> k >> n;
+    	int* input = new int[n];
+    	for(int i = 0; i < n; i++){
+        	cin >> input[i];
+    	}
+    	cout << traderProfit(input, n, k, INT_MAX) << endl;
+    }
     return 0;
 }
