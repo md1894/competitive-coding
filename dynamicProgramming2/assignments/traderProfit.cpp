@@ -76,6 +76,30 @@ int traderProfit(int* input, int n, int k, int cost){
     return ans;
 }
 
+// int traderProfitDP(int* input, int n, int k){
+//     int** dp = new int*[k+1];
+//     for(int i = 0; i <= k; i++){
+//         dp[i] = new int[n+1];
+//         for(int j = 0; j<= n; j++){
+//             dp[i][j] = 0;
+//         }
+//     }
+
+//     for(int i = 1; i <= k; i++){
+//         for(int j = 1; j <= n; j++){
+//             int op1 = (input)
+//             dp[i][j] = max(op1,max(op2,op3));
+//         }
+//     }
+//     /* deallocate the dp array */
+//     int ans = dp[k][n];
+//     for(int i = 0; i <= k; i++){
+//         delete dp[i];
+//     }
+//     delete [] dp;
+//     return ans;
+// }
+
 int main()
 {
     int t;
