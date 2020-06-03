@@ -1,9 +1,45 @@
+/*
+SUBSUMS - Subset Sums
+#binary-search #bitmasks
+
+Given a sequence of N (1 ≤ N ≤ 34) numbers S1, ..., SN (-20,000,000 ≤ Si ≤ 20,000,000), determine how many subsets of S (including the empty one) have a sum between A and B (-500,000,000 ≤ A ≤ B ≤ 500,000,000), inclusive.
+Input
+
+The first line of standard input contains the three integers N, A, and B. The following N lines contain S1 through SN, in order.
+Output
+
+Print a single integer to standard output representing the number of subsets satisfying the above property. Note that the answer may overflow a 32-bit integer.
+Example
+
+Input:
+3 -1 2
+1
+-2
+3
+
+Output:
+5
+
+The following 5 subsets have a sum between -1 and 2:
+
+    0 = 0 (the empty subset)
+    1 = 1
+    1 + (-2) = -1
+    -2 + 3 = 1
+    1 + (-2) + 3 = 2
+
+
+*/
 #include<bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
 
+/*
+this function will extract the subset and calculate the sum then add it to the ans
+*/
 void subsets(vector<ll> input, vector<ll>& sv){
+	/* sv will hold the ans */
 	ll n = input.size();
 	for(ll i = 1; i < (1<<n); i++){
 		ll sum = 0;
@@ -18,6 +54,16 @@ void subsets(vector<ll> input, vector<ll>& sv){
 	}
 }
 
+
+/*
+to solve this problem we divided the total combinations 2^34 into the set of 2
+v1 --> can hold max of 2^17 combinations
+v2 --> can hold max of 2^17 combinations
+we calculate subset_sum for each list of elements v1 and v2 in sv2 , sv1
+we sort one of them 
+a = 3, b = 9 and sv1 --> {6,1,4} and sv2--> {1,2,3}
+so if i take sv1[1] == 6 i can get {6,1} {6,2} {6,3}
+*/
 int main()
 {
 	ll n,a,b;
@@ -56,6 +102,7 @@ int main()
 
 	// including subset sums from 2nd set
         for(ll i = 0; i < sv2.size(); i++){
+		
             if(a <= sv2[i] && sv2[i] <= b){
                 ans++;
             }
