@@ -15,17 +15,17 @@ int main() {
 	    }
 	    ll min_index = 0;
 	    ll max_index = n-1;
-	    /* this variable must be greater than the max-element */
-        /*
-        //multiplying every number by a number greater than maxEle to save
+	/* this variable must be greater than the max-element */
+	/*
+	//multiplying every number by a number greater than maxEle to save
 	    //it in   Dividend = Divisor * Quotient + Remainder form
 	    //Dividend = number at arr[i] (stores both old and new)
 	    //Divisor = maxEle +1, Quotient = new number , Remainder = old no
-        */
-        /*
-        in this question you will have all max elements at even index and all min element at odd index
-        so at odd index add min elements and at even index add max elements (two pointer)
-        */
+	*/
+	/*
+	in this question you will have all max elements at even index and all min element at odd index
+	so at odd index add min elements and at even index add max elements (two pointer)
+	*/
 	    ll z = arr[max_index]+1;
 	    for(ll i = 0; i < n; i++){
             if(i%2 != 0){
