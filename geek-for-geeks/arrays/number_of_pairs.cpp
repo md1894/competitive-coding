@@ -29,5 +29,5 @@ Output
 3
 
 Explanation:
-Testcase 1: The pairs which follow xy > yx are as such: 21 > 12,  25 > 52 and 61 > 16  
+Testcase 1: The pairs which follow x^y > y^x are as such: 2^1 > 1^2,  2^5 > 5^2 and 6^1 > 1^6  
 */
