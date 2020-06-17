@@ -1,154 +1,138 @@
 #include <iostream>
-#include <vector>
+#include<vector>
 using namespace std;
+#define ll long long 
+// defining initial variable making it global for using it eveywhere
+vector<ll> b,c;
+ll k,mod;
+vector<vector<ll>> multiply(vector<vector<ll>> A,vector<vector<ll>> B)
+{
+    vector<vector<ll>> C(k+1,vector<ll>(k+1));
 
-#define ll long long
-ll MOD;
-
-ll k;
-vector<ll> a,b,c;
-
-//Multiply two matrices
-vector<vector<ll> > multiply(vector<vector<ll> > A,vector<vector<ll> > B ){
-
-    //third matrix mei result store
-    vector<vector<ll> > C(k+1,vector<ll>(k+1));
-
-    for(int i=1;i<=k;i++){
-        for(int j=1;j<=k;j++){
-            for(int x=1;x<=k;x++){
-
-                C[i][j] = (C[i][j] + (A[i][x]*B[x][j])%MOD)%MOD;
+    for(int i=0;i<=k;i++)
+    {
+        for(int j=0;j<=k;j++)
+        {
+            C[i][j]=0;
+            for(int x=0;x<=k;x++)
+            {
+                C[i][j]=(C[i][j]+(A[i][x]*B[x][j])%mod)%mod;
             }
-
         }
     }
-
-
     return C;
 }
-
-
-vector<vector<ll> >  pow(vector<vector<ll> > A,ll p){
-
-    //Base case
-    if(p==1){
+// computing power of transition matrix
+vector<vector<ll>> power(vector<vector<ll>> A,ll n)
+{
+    // base case 
+    if(n==1)
+    { 
         return A;
     }
-    //Rec Case
-    // A^p = A * A^p-1   for odd
-    if(p&1){
-        return multiply(A, pow(A,p-1));
+    if(n&1)
+    {
+        return multiply(A,power(A,n-1));
     }
-    else{
-        // A^p = A^(p/2)*A^(p/2)  for even
-        vector<vector<ll> > X = pow(A,p/2);
-        return multiply(X,X);
+    else 
+    {
+        vector<vector<ll>> x=power(A,n/2);
+        return multiply(x,x);
     }
-
 }
-
-
-ll compute(ll n){
-    //Base case
-    if(n==0){
-        return 0;
+ll compute(ll n)
+{
+    if(n<=k)
+    {
+        ll result=0;
+        for(int i=0;i<n;i++)
+        {
+            result+=b[i];
+        }
+        return result;
     }
-
-    //Suppose n<=k
-    // age k se km he to wo to ques me hi given he na bc!!
-    if(n<=k){
-        return b[n-1];
+    // computing the sum sk
+    ll sum=0;
+    for(int i=0;i<k;i++)
+    {
+      sum+=b[i];
     }
-
-    //Otherwise we use matrix exponentiation, indexing 1 se, that's y size is k+1
+    sum=sum;
+    // making F1 vector
     vector<ll> F1(k+1);
+    for(int i=0;i<=k;i++)
+    {
+        if(i==0)
+        {
+            F1[i]=sum;
+        }
+        else 
+        {
+            F1[i]=b[i-1];
+        }
+    } 
+    // step 1 construct transition matrix i.e T
+    vector<vector<ll>> T(k+1,vector<ll>(k+1));
 
-    //1. Setting up F1 vector
-    for(int i=1;i<=k;i++){
-        F1[i] = b[i-1];
-    }
-
-    //2. Transformation matrix
-    vector<vector<ll> > T(k+1,vector<ll>(k+1));
-    // Let's init T
-
-    for(int i=1;i<=k;i++){
-        for(int j=1;j<=k;j++){
-            // every row except the last one has either 0 or 1 in it
-            if(i<k){
-                if(j==i+1){
-                    // 1 at next element to diagonal
-                    T[i][j] = 1;
-                }
-                else{
-                    T[i][j] = 0;
-                }
-                continue;
+    for(int i=0;i<=k;i++)
+    {
+        for(int j=0;j<=k;j++)
+        {
+            if(i==0 && j==0)
+            {
+                T[i][j]=1;
             }
-            //Last Row - store the Coefficients in reverse order
-            T[i][j] = c[k-j];
-
+            else if((i==0 || i==k) && j>0)
+            {
+                T[i][j]=c[k-j];
+            }
+            else if((i+1)==j)
+            {
+                T[i][j]=1;
+            }
+            else 
+            {
+                T[i][j]=0;
+            }
+          //  cout <<T[i][j] << ' ';
         }
-
+      //  cout << endl;
     }
-
-    // 3. T^n-1
-    T = pow(T,n-1);
-
-    // 4. multiply by F1
-    // we only need the first term, so no need to multiply whole again
-    ll res = 0;
-    for(int i=1;i<=k;i++){
-        res = (res + (T[1][i]*F1[i])%MOD)%MOD;
+    // computing power of transition matrix 
+    T=power(T,n-k);
+    // Now the final step for the answer computing Sn
+    // reusing sum 
+    sum=0;
+    for(int i=0;i<=k;i++)
+    {
+        sum=(sum+(T[0][i]*F1[i])%mod)%mod;
     }
-
-    return res;
-
+  //  cout << endl;
+    return sum;
 }
-
 int main() {
-
-    ll t,n,m,p,num;
-
-    cin>>t;
-    while(t--){
-
-        cin>>k;
-
-        // enter vector b
-        //Init Vector F1
-        for(int i=0;i<k;i++){
-            cin>>num;
-            b.push_back(num);
+    int t;
+    cin >> t ; 
+    ll m,n;
+    while(t--)
+    {
+        cin >> k;
+        b.resize(k);
+        c.resize(k);
+        // taking initial element as input i.e. b1,b2.....bk
+        for(int i=0;i<k;i++)
+        {
+            cin >> b[i];
+        }
+        // taking input coefficient of recurrence relation
+        for(int i=0;i<k;i++)
+        {
+            cin >> c[i];
         }
 
-        //Coefficients
-        // enter vector c
-        for(int i=0;i<k;i++){
-            cin>>num;
-            c.push_back(num);
-        }
-        // the value of m,n and p
-        cin>>m>>n>>p;
-        MOD=p;
-        
-        ll ans1 = compute(m+1)%p;
-        ll ans2 = compute(n+2)%p;
+        cin >> m >> n >> mod;
+        ll result=(compute(n)%mod-compute(m-1)%mod+mod)%mod;
 
-        ll ans = (ans2-ans1);
-        
-        if(ans<0){
-          ans=(ans+p)%p;
-          cout<<ans%p<<endl;
-        }
-        else
-        cout<<ans%p<<endl;
-
-        b.clear();
-        c.clear();
+        cout << result << "\n" ;
     }
-
-    return 0;
-
 }
