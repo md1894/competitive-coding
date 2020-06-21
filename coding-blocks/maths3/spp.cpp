@@ -98,16 +98,40 @@ ll compute(ll n)
         }
       //  cout << endl;
     }
+    cout << "b" << endl;
+    for(auto i: b){
+        cout << i << " ";
+    }
+    cout << endl;
+    cout << "c" << endl;
+    for(auto i: c){
+        cout << i << " ";
+    }
+    cout << endl;
+    cout << "T" << endl;
+    for(ll i = 0; i <= k; i++){
+        for(ll j = 0; j <= k; j++){
+            cout << T[i][j] << " ";
+        }
+        cout << endl;
+    }
     // computing power of transition matrix 
     T=power(T,n-k);
     // Now the final step for the answer computing Sn
     // reusing sum 
+    cout << "T" << endl;
+    for(ll i = 0; i <= k; i++){
+        for(ll j = 0; j <= k; j++){
+            cout << T[i][j] << " ";
+        }
+        cout << endl;
+    }
     sum=0;
     for(int i=0;i<=k;i++)
     {
         sum=(sum+(T[0][i]*F1[i])%mod)%mod;
     }
-  //  cout << endl;
+    //cout << sum << endl;
     return sum;
 }
 int main() {
@@ -133,6 +157,6 @@ int main() {
         cin >> m >> n >> mod;
         ll result=(compute(n)%mod-compute(m-1)%mod+mod)%mod;
 
-        cout << result << "\n" ;
+        cout << result << endl;
     }
 }
