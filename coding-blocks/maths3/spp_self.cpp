@@ -34,9 +34,13 @@ Output:
 using namespace std;
 typedef long long ll;
 
+/* please note that in the matrix_exponentiation problem the matrices are starting from index 1 */
+/* but here the matrices are starting from index 0 */
 vector<ll> b,c;
 ll k,MOD;
 
+/* for better understanding of the algorithm dry run this on fibonacci number sum from m to n */
+/* choose any span */
 vector<vector<ll>> multiply(vector<vector<ll>> A, vector<vector<ll>> B){
    vector<vector<ll>> C(k+1,vector<ll>(k+1));
    for(ll i = 0; i <= k; i++){
@@ -75,6 +79,7 @@ ll compute(ll n){
         sum += b[i];
     }
     vector<ll> F1(k+1);
+    /* this step is also important */
     for(ll i=0;i<=k;i++){
         if(i==0){
             F1[i]=sum;
@@ -84,6 +89,7 @@ ll compute(ll n){
         }
     }
     vector<vector<ll>> T(k+1,vector<ll>(k+1));
+    /* this logic to build the transformation matrix is the heart of problem */
     for(int i = 0; i < k+1; i++){
         for(int j = 0; j < k+1; j++){
             if(i == 0 && j == 0){
