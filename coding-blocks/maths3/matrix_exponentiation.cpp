@@ -50,6 +50,8 @@ typedef long long ll;
 vector<ll> a, b, c;
 ll k;
 
+/* this is a simple matrix multiplication logic */
+/* please note that matrix starts at 1,1 */
 vector<vector<ll>> multiply(vector<vector<ll>> A, vector<vector<ll>> B){
    vector<vector<ll>> C(k+1,vector<ll>(k+1));
    for(ll i = 1; i <= k; i++){
@@ -62,7 +64,7 @@ vector<vector<ll>> multiply(vector<vector<ll>> A, vector<vector<ll>> B){
    return C;
 }
 
-
+/* calculating power of a matrix using fast exponentiation logic */
 vector<vector<ll>> pow(vector<vector<ll>> T, ll n){
    if(n == 1)
       return T;
@@ -81,14 +83,14 @@ ll compute(ll n){
 
    if(n <= k)
       return b[n-1];
-   
+   /* building F1 vector which is starting from index 1 */
    vector<ll> F1 = vector<ll>(k+1);
    for(ll i = 1; i <= k; i++){
       F1[i] = b[i-1];
    }
 
    vector<vector<ll>> T(k+1,vector<ll>(k+1));
-
+   /* logic to build a 2D transformation matrix */
    for(ll i = 1; i <= k; i++){
       for(ll j = 1; j <= k; j++){
          if(i < k){
@@ -106,6 +108,7 @@ ll compute(ll n){
    T = pow(T,n-1);
 
    ll res = 0;
+   /* follow the pdf in that pdf it is given that the first element of T^(n-1)*F1 is the ans */
    for(ll i = 1; i <= k; i++){
       res  = (res + (T[1][i]*F1[i])%MOD)%MOD;
    }
