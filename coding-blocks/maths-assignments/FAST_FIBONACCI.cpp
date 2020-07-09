@@ -42,6 +42,8 @@ using namespace std;
 
 typedef long long int ll;
 
+/* k here is 2 , hence we create a matrix of 3x3 , 1 indexed */
+
 /* this is a simple matrix multiplication logic */
 /* please note that matrix starts at 1,1 */
 vector<vector<ll>> multiply(vector<vector<ll>> A, vector<vector<ll>> B){
@@ -75,6 +77,7 @@ ll compute(ll n){
 
    /* building F1 vector which is starting from index 1 */
    vector<ll> F1 = vector<ll>(2+1);
+   /* As First 2 terms are 1, 1 */
    F1[1] = 1;
    F1[2] = 1;
 
