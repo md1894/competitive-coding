@@ -35,74 +35,79 @@ Sample Output
 
 */
 
-// We know the fact that: Sum of first n Fibonacci numbers is the (n+2)th Fibonacci number.
-// So (F(N) + F(N + 1) + ... + F(M)= F(M+2) - F(N+1).
-// Now all we need is to calculate 2 Fibonacci nos.
-// It uses the Matrix exponentiation algorithm to calculate Fibonacci nos.
-
-#include<stdio.h>
-using namespace std;
-typedef long long ll;
+#include<bits/stdc++.h>
 #define MOD 1000000007
+using namespace std;
 
-void multiply(ll F[2][2], ll M[2][2]);
+typedef long long int ll;
 
-void power(ll F[2][2], ll n);
+/* k here is 2 , hence we create a matrix of 3x3 , 1 indexed */
 
-/* function that returns nth Fibonacci number */
-ll fib(ll n)
-{
-  ll F[2][2] = {{1,1},{1,0}};
-  if (n == 0)
-    return 0;
-  power(F, n-1);
-  return F[0][0];
+/* this is a simple matrix multiplication logic */
+/* please note that matrix starts at 1,1 */
+vector<vector<ll>> multiply(vector<vector<ll>> A, vector<vector<ll>> B){
+   vector<vector<ll>> C(2+1,vector<ll>(2+1));
+   for(ll i = 1; i <= 2; i++){
+      for(ll j = 1; j <= 2; j++){
+         for(ll x = 1; x <= 2; x++){
+            C[i][j] = (C[i][j] + (A[i][x]*B[x][j])%MOD)%MOD;
+         }
+      }
+   }
+   return C;
 }
 
-void power(ll F[2][2], ll n)
-{
-  if( n == 0 || n == 1)
-      return;
-  ll M[2][2] = {{1,1},{1,0}};
-
-  power(F, n/2);
-  multiply(F, F);
-
-  if (n%2 != 0)
-     multiply(F, M);
+/* calculating power of a matrix using fast exponentiation logic */
+vector<vector<ll>> pow(vector<vector<ll>> T, ll n){
+   if(n == 1)
+      return T;
+   
+   if(n&1){
+      return multiply(T,pow(T,n-1));
+   }
+   vector<vector<ll>> X = pow(T,n/2);
+   return multiply(X,X);
 }
 
-void multiply(ll F[2][2], ll M[2][2])
-{
-  ll x =  (F[0][0]*M[0][0] + F[0][1]*M[1][0])%MOD;
-  ll y =  (F[0][0]*M[0][1] + F[0][1]*M[1][1])%MOD;
-  ll z =  (F[1][0]*M[0][0] + F[1][1]*M[1][0])%MOD;
-  ll w =  (F[1][0]*M[0][1] + F[1][1]*M[1][1])%MOD;
 
-  F[0][0] = x;
-  F[0][1] = y;
-  F[1][0] = z;
-  F[1][1] = w;
+ll compute(ll n){
+   if(n == 1 || n == 2)
+      return 1;
+
+   /* building F1 vector which is starting from index 1 */
+   vector<ll> F1 = vector<ll>(2+1);
+   /* As First 2 terms are 1, 1 */
+   F1[1] = 1;
+   F1[2] = 1;
+
+   vector<vector<ll>> T(2+1,vector<ll>(2+1));
+   /* logic to build a 2D transformation matrix */
+   T[1][1] = 0;
+   T[1][2] = 1;
+   T[2][1] = 1;
+   T[2][2] = 1;
+
+   T = pow(T,n-1);
+
+   ll res = 0;
+   /* follow the pdf in that pdf it is given that the first element of T^(n-1)*F1 is the ans */
+   for(ll i = 1; i <= 2; i++){
+      res  = (res + (T[1][i]*F1[i])%MOD)%MOD;
+   }
+   return res;
 }
+
 
 int main(){
-    int t;
-    ll n, m,result;
-    scanf("%d",&t);
-    while(t--){
-        scanf("%lld %lld",&n,&m);
-        if(n>m){
-            printf("Error!!");
-        }
-        else{
-            result=(fib(m+2)-fib(n+1))%MOD;
-            if (result<0){
-                result+=MOD;
-            }
-            printf("%lld\n", result);
-        }
-    }
-    return 0;
+	ll t;
+	cin >> t;
+	while(t--){
+		ll n, m;
+		cin >> n >> m;
+    /* mathematical relation for the sum of fibonacci number */
+		cout << (compute(m+2)%MOD - compute(n+1)%MOD + MOD)%MOD << endl;
+	}
+	return 0;
 }
 
 
