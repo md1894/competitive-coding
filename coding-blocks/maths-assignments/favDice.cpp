@@ -29,3 +29,27 @@ Sample Output
 37.24
 
 */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    
+
+    int t;    //change t if required
+    cin>>t;
+    while(t--)
+    {
+		double n;
+        cin>>n;
+        double ans=0;
+
+        for(double i=1;i<=n;i++)
+            ans+=(double)(n/i);
+        cout<<fixed<<setprecision(2)<<ans<<endl;
+
+    }
+
+    return 0;
+}
