@@ -49,7 +49,7 @@ typedef long long int ll;
 void seive(int *p, vector<int>& primes){
 	p[0] = p[1] = 0;
 	p[2] = 1;
-	primes.push_back(i);
+	primes.push_back(2);
 	for(ll i = 3; i <= N; i += 2){
 		p[i] = 1;
 	}
@@ -63,23 +63,25 @@ void seive(int *p, vector<int>& primes){
 	}
 }
 
-vector<int> do_prime_factorization(vector<int>& primes, 
-	ll m, vector<int>& ans)
+void do_prime_factorization(vector<int>& primes, 
+	ll m, vector<pair<int, pair<int, int>>>& ans)
 {
+	ll factor;
 	int count;
-	vector<pair<int,int>> prime_factors;
-	for(ll i = 0; primes[i]*primes[i] <= m; i++){
+	for(int i = 0; primes[i]*primes[i] <= m; i++){
 		if(m % primes[i] == 0){
 			count = 0;
+			factor = 1;
 			while(m % primes[i] == 0){
 				count++;
+				factor = factor*primes[i];
 				m = m / primes[i];
 			}
-			primes.push_back(make_pair(primes[i], count));
+			ans.push_back(make_pair(factor, make_pair(primes[i], count)));
 		}
 	}
 	if(m != 1){
-		prime_factors.push_back(make_pair(m, 1));
+		ans.push_back(make_pair(m, make_pair(m, 1)));
 	}
 }
 
@@ -90,23 +92,38 @@ int main(){
 	int t;
 	cin >> t;
 	while(t--){
+		vector<pair <int, pair<int, int> > >  ans;
 		ll m;
 		cin >> m;
-		vector<int> ans;
 		do_prime_factorization(primes, m, ans);
-		if(ans.empty() || (ans.size() == 1 && ans[0].second < 6)){
-			cout << "NO" << endl;
-		}else if (ans.size() == 2){
-			ll generatedNumber = (m)/(ans[0]*ans[1]);
-			bool isValid = generatedNumber == ans[0] || generatedNumber == ans[1];
-			if(generatedNumber >= 2 && isValid){
+		if(ans.size() == 1 && ans[0].second.second >= 6){
+			ll one = ans[0].second.first;
+			ll two = one*one;
+			ll three = ans[0].first/(one*two);
+			// success
+			cout << "YES" << endl;
+			cout << one << " " << two << " " << three << endl;
+		}else if(ans.size() == 2){
+			ll one = ans[0].second.first;
+			ll two = ans[1].second.first;
+			ll gen = m/(one*two);
+			if(gen != ans[0].first && gen != ans[1].first && gen >= 2){
+				// success
 				cout << "YES" << endl;
-				cout << ans[0] << " " << ans[1] << " " << generatedNumber << endl;
+				cout << one << " " << two << " " << gen << endl;
 			}else{
+				// fail
 				cout << "NO" << endl;
 			}
+		}else if(ans.size() >= 3){
+			ll one = ans[0].first;
+			ll two = ans[1].first;
+			ll three = m/(one*two);
+			//success
+			cout << "YES" << endl;
+			cout << one << " " << two << " " << three << endl;
 		}else{
-			
+			cout << "NO" << endl;
 		}
 	}
 	return 0;
