@@ -39,100 +39,132 @@ YES
 3 5 823 
 */
 
-
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #define N 100000
 using namespace std;
 typedef long long int ll;
 
+// void seive(int *p, vector<int>& primes){
+// 	p[0] = p[1] = 0;
+// 	p[2] = 1;
+// 	primes.push_back(2);
+// 	for(ll i = 3; i <= N; i += 2){
+// 		p[i] = 1;
+// 	}
+// 	for(ll i = 3; i <= N; i += 2){
+// 		if(p[i] == 1){
+// 			primes.push_back(i);
+// 			for(ll j = i*i; j <= N; j += i){
+// 				p [j] = 0;
+// 			}
+// 		}
+// 	}
+// }
 
-void seive(int *p, vector<int>& primes){
-	p[0] = p[1] = 0;
-	p[2] = 1;
-	primes.push_back(2);
-	for(ll i = 3; i <= N; i += 2){
-		p[i] = 1;
-	}
-	for(ll i = 3; i <= N; i += 2){
-		if(p[i] == 1){
-			primes.push_back(i);
-			for(ll j = i*i; j <= N; j += i){
-				p [j] = 0;
-			}
-		}
-	}
-}
+// void do_prime_factorization(vector<int>& primes,
+// 	ll m, vector<pair<int, pair<int, int>>>& ans)
+// {
+// 	ll factor;
+// 	int count;
+// 	for(int i = 0; primes[i]*primes[i] <= m; i++){
+// 		if(m % primes[i] == 0){
+// 			count = 0;
+// 			factor = 1;
+// 			while(m % primes[i] == 0){
+// 				count++;
+// 				factor = factor*primes[i];
+// 				m = m / primes[i];
+// 			}
+// 			ans.push_back(make_pair(factor, make_pair(primes[i], count)));
+// 		}
+// 	}
+// 	if(m != 1){
+// 		ans.push_back(make_pair(m, make_pair(m, 1)));
+// 	}
+// }
 
-void do_prime_factorization(vector<int>& primes, 
-	ll m, vector<pair<int, pair<int, int>>>& ans)
+// int main(){
+// 	int p[N+1] = {0};
+// 	vector<int> primes;
+// 	seive(p, primes);
+// 	int t;
+// 	cin >> t;
+// 	while(t--){
+// 		vector<pair <int, pair<int, int> > >  ans;
+// 		ll m;
+// 		cin >> m;
+// 		do_prime_factorization(primes, m, ans);
+// 		if(ans.size() == 1 && ans[0].second.second >= 6){
+// 			ll one = ans[0].second.first;
+// 			ll two = one*one;
+// 			ll three = ans[0].first/(one*two);
+// 			// success
+// 			cout << "YES" << endl;
+// 			cout << one << " " << two << " " << three << endl;
+// 		}else if(ans.size() == 2){
+// 			ll one = ans[0].second.first;
+// 			ll two = ans[1].second.first;
+// 			ll gen = m/(one*two);
+// 			if(gen != ans[0].first && gen != ans[1].first && gen >= 2){
+// 				// success
+// 				cout << "YES" << endl;
+// 				cout << one << " " << two << " " << gen << endl;
+// 			}else{
+// 				// fail
+// 				cout << "NO" << endl;
+// 			}
+// 		}else if(ans.size() >= 3){
+// 			ll one = ans[0].first;
+// 			ll two = ans[1].first;
+// 			ll three = m/(one*two);
+// 			//success
+// 			cout << "YES" << endl;
+// 			cout << one << " " << two << " " << three << endl;
+// 		}else{
+// 			cout << "NO" << endl;
+// 		}
+// 	}
+// 	return 0;
+// }
+
+// above approach is by using prime seive
+int main()
 {
-	ll factor;
-	int count;
-	for(int i = 0; primes[i]*primes[i] <= m; i++){
-		if(m % primes[i] == 0){
-			count = 0;
-			factor = 1;
-			while(m % primes[i] == 0){
-				count++;
-				factor = factor*primes[i];
-				m = m / primes[i];
-			}
-			ans.push_back(make_pair(factor, make_pair(primes[i], count)));
-		}
-	}
-	if(m != 1){
-		ans.push_back(make_pair(m, make_pair(m, 1)));
-	}
-}
-
-int main(){
-	int p[N+1] = {0};
-	vector<int> primes;
-	seive(p, primes);
 	int t;
 	cin >> t;
-	while(t--){
-		vector<pair <int, pair<int, int> > >  ans;
+	while (t--)
+	{
 		ll m;
+		ll counter = 0;
+		vector<ll> arr;
 		cin >> m;
-		do_prime_factorization(primes, m, ans);
-		if(ans.size() == 1 && ans[0].second.second >= 6){
-			ll one = ans[0].second.first;
-			ll two = one*one;
-			ll three = ans[0].first/(one*two);
-			// success
-			cout << "YES" << endl;
-			cout << one << " " << two << " " << three << endl;
-		}else if(ans.size() == 2){
-			ll one = ans[0].second.first;
-			ll two = ans[1].second.first;
-			ll gen = m/(one*two);
-			if(gen != ans[0].first && gen != ans[1].first && gen >= 2){
-				// success
-				cout << "YES" << endl;
-				cout << one << " " << two << " " << gen << endl;
-			}else{
-				// fail
-				cout << "NO" << endl;
+		for (ll i = 2; i * i <= m; i++)
+		{
+			if (m % i == 0)
+			{
+				counter++;
+				m = m / i;
+				arr.push_back(i);
 			}
-		}else if(ans.size() >= 3){
-			ll one = ans[0].first;
-			ll two = ans[1].first;
-			ll three = m/(one*two);
-			//success
-			cout << "YES" << endl;
-			cout << one << " " << two << " " << three << endl;
-		}else{
+			if (counter == 2)
+			{
+				arr.push_back(m);
+				break;
+			}
+		}
+		if (counter < 2)
+		{
 			cout << "NO" << endl;
+		}
+		else if (arr[0] == arr[2] || arr[1] == arr[2])
+		{
+			cout << "NO" << endl;
+		}
+		else
+		{
+			cout << "YES" << endl;
+			cout << arr[0] << " " << arr[1] << " " << arr[2] << endl;
 		}
 	}
 	return 0;
 }
-
-
-
-
-
-
-
-
