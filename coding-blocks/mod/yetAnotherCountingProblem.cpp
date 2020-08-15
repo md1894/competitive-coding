@@ -56,26 +56,36 @@ int a, b;
 int arr [N+1];
 int sum [N+1];
 
+
+// pre computed the array and sum
 void construct_array(){
-    for(int x = 0; x <= (a*b); x++){
-        // ((x % a) % b) != ((x % b) % a).
-        if(((x % a) % b) != ((x % b) % a)){
+
+    for(int x = 0; x <= (a*b); x++)
+        if(((x % a) % b) != ((x % b) % a))
             arr [x] = 1;
-        }else{
+        else
             arr [x] = 0;
-        }
-    }
+        
+
     sum [0] = 0;
-    for(int x = 1; x <= (a*b); x++){
+    for(int x = 1; x <= (a*b); x++)
         if(arr [x])
             sum [x] = sum [x-1] + 1;
         else
             sum [x] = sum [x-1];
-    }
 }
 
 ll solve(ll n){
-    ll ans = n/(a*b)*sum[(a*b)];
+    /*
+    numbers will get repeated in a cycle
+    0   to  ab-1
+    ab  to 2ab-1
+    2ab to 3ab-1
+    ...
+    ...
+    and so on
+    */
+    ll ans = n/(a*b)*sum[((a*b)-1)];
     ans += sum[n%(a*b)];
     return ans;
 }
@@ -83,26 +93,14 @@ ll solve(ll n){
 int main(){
     int test_cases;
     cin >> test_cases;
-    while(--test_cases){
+    while(test_cases--){
         int q;
         cin >> a >> b >> q;
         // construct array of sums of size AxB
         construct_array();
-        cout << "\nnormal array\n";
-        for(int i = 0; i <= 23; i++){
-            cout << arr [i] << " ";
-        }
-        cout << endl;
-        cout << "--";
-        cout << "\nsum array\n";
-        for(int i = 0; i <= 23; i++){
-            cout << sum [i] << " ";
-        }
-        cout << endl;
-        cout << "\n--\n";
-        while(--q){
+        while(q--){
             ll li, ri;
-            cin >> li, ri;
+            cin >> li >> ri;
             cout << solve(ri) - solve(li-1) << " ";
         }
         cout << endl;
