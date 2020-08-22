@@ -40,9 +40,34 @@ void extended_euclid_algo(int a, int b)
     y = cY;
 }
 
+
+
+int extended_euclid_algo(int a, int b, int &x, int &y){
+    // base case
+    if(b == 0){
+        // aX + bY = GCD(a, b);
+        // as b == 0
+        // aX = GCD(a, b) 
+        // means x == 1, [ because in this case GCD(a, 0) == a ]
+        y = 0;
+        x = 1;
+        return a;
+    }
+    int GCD = extended_euclid_algo(b, a%b, x, y);
+    // first we evaluated new x, y (x1, y1) using old x, y
+    int cX = y;
+    int cY = x - (a/b) * y;
+    // update the x, y
+    x = cX;
+    y = cY;
+    return GCD;
+}
+
+
 int main()
 {
-    extended_euclid_algo(30, 18);
+    int x, y;
+    int GCD = extended_euclid_algo(30, 20, x, y);
     cout << "(" << x << "," << y << ")"
          << " GCD IS -> " << GCD << endl;
     return 0;

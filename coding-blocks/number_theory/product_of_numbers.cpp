@@ -138,7 +138,7 @@ int main()
 		ll counter = 0;
 		vector<ll> arr;
 		cin >> m;
-		for (ll i = 2; i * i <= m; i++)
+		for (ll i = 1; i * i <= m; i++)
 		{
 			if (m % i == 0)
 			{

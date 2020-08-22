@@ -78,7 +78,7 @@ ll euclid_GCD(ll a, ll b){
 ll bigGCD(ll n, string m) {
     ll y = 0;
     for(int i = 0; m[i] != 0; i++){
-        y = (y + ((m[i] - 48)*fastModExp(10, m.length()-i-1, n))) % n;
+        y = y + (((m[i] - 48)%n)*(fastModExp(10, m.length()-i-1, n)%n));
     }
     return euclid_GCD(y, n);
 }
@@ -87,6 +87,9 @@ int main(){
     ll n;
     string m;
     cin >> n >> m;
-    cout << bigGCD(n, m) << endl;
+    if(n == 0)
+        cout << m << endl;
+    else
+        cout << bigGCD(n, m) << endl;
     return 0;
 }
