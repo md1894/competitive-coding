@@ -31,16 +31,17 @@ Since (10*12) mod 17 = 1, 12 is modulo inverse of 10(under 17).
 
 #include<bits/stdc++.h>
 using namespace std;
+typedef long long int ll;
 
-int extendedEuclidAlgorithm(int a, int b, int &x, int &y){
+ll extendedEuclidAlgorithm(ll a, ll b, ll &x, ll &y){
     if(b == 0){
         y = 0;
         x = 1;
         return a;
     }
-    int gcd = extendedEuclidAlgorithm(b, a%b, x, y);
-    int tempX = y;
-    int tempY = x - (a/b)*y;
+    ll gcd = extendedEuclidAlgorithm(b, a%b, x, y);
+    ll tempX = y;
+    ll tempY = x - (a/b)*y;
     x = tempX;
     y = tempY;
     return gcd;
@@ -48,14 +49,14 @@ int extendedEuclidAlgorithm(int a, int b, int &x, int &y){
 
 
 int main(){
-    int a, m;
+    ll a, m;
     cin >> a >> m;
-    int x, y;
-    int GCD = extendedEuclidAlgorithm(a, m, x, y);
+    ll x, y;
+    ll GCD = extendedEuclidAlgorithm(a, m, x, y);
     if(GCD != 1){
         cout << "MULTIPLICATIVE MODULAR INVERSE DOES NOT EXSIST " << endl;
     }else{
-        int ans = (x%m + m)%m;
+        ll ans = (x%m + m)%m;
         cout << "MULTIPLICATIVE MODULAR INVERSE IS " << ans << endl;
     }
     return 0;
