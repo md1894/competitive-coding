@@ -38,18 +38,17 @@ x = (rem[0]*pp[0]*inv[0] + rem[1]*pp[1]*inv[1] + rem[2]*pp[2]*inv[2]) % prod
 using namespace std;
 typedef long long int ll;
 
-ll extendedEuclidAlgorithm(ll a, ll b, ll &x, ll &y){
+void extendedEuclidAlgorithm(ll a, ll b, ll &x, ll &y){
     if(b == 0){
         y = 0;
         x = 1;
-        return a;
+        return;
     }
-    ll gcd = extendedEuclidAlgorithm(b, a%b, x, y);
+    extendedEuclidAlgorithm(b, a%b, x, y);
     ll tempX = y;
     ll tempY = x - (a/b)*y;
     x = tempX;
     y = tempY;
-    return gcd;
 }
 
 
@@ -60,7 +59,7 @@ void get_mod_mul_inv(int inv[], int num[], int k){
     }
     for(int i = 0; i < k; i++){
         ll x, y;
-        extendedEuclidAlgorithm(product/num[i],num[i], x, y);
+        extendedEuclidAlgorithm(product/num[i], num[i], x, y);
         inv[i] = (x % num[i] + num[i]) % num[i];
     }
 }
